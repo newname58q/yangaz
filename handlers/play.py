@@ -42,9 +42,6 @@ async def oynat(_, message: Message):
                  ],
                  [
                     InlineKeyboardButton(
-                        text="🇹🇷 ᴄʀᴇᴀᴛᴏʀ 🇹🇷",
-                        url=f"https://t.me/jackdanielssx"),
-                    InlineKeyboardButton(
                         text="🇹🇷 ʙᴏᴛᴜɴ ꜱᴀʜɪʙɪ 🇹🇷",
                         url=f"https://t.me/kakkurt")
                    
