@@ -82,26 +82,13 @@ async def ytplay(_, message: Message):
     keyboard = InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton(
-                        text="💬 ɢʀᴏᴜᴘ",
-                        url=f"https://t.me/yangazlargrub"),
-                    InlineKeyboardButton(
-                        text="🌀 ᴀꜱɪꜱᴛᴀɴ",
-                        url=f"https://t.me/yangazasistan")
-                   
-                ]
-            ]
-        )
 
     keyboard2 = InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
-                        text="💬 ɢʀᴏᴜᴘ",
-                        url=f"https://t.me/yangazlargrub"),
-                    InlineKeyboardButton(
-                        text="🌀 ᴀꜱɪꜱᴛᴀɴ",
-                        url=f"https://t.me/yangazasistan")
+                        text="🇹🇷 ʙᴏᴛᴜɴ ꜱᴀʜɪʙɪ 🇹🇷",
+                        url=f"https://t.me/kakkurt")
                    
                 ]
             ]
