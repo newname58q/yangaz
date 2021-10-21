@@ -32,14 +32,6 @@ async def oynat(_, message: Message):
 
     keyboard = InlineKeyboardMarkup(
             [
-                [
-                    InlineKeyboardButton(
-                        text="🌀 ᴀꜱɪꜱᴛᴀɴ",
-                        url=f"https://t.me/yangazasistan"),
-                    InlineKeyboardButton(
-                        text="💬 ɢʀᴏᴜᴘ​",
-                        url=f"https://t.me/yangazlargrub")
-                 ],
                  [
                     InlineKeyboardButton(
                         text="🇹🇷 ʙᴏᴛᴜɴ ꜱᴀʜɪʙɪ 🇹🇷",
