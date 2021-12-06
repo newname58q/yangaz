@@ -1,15 +1,11 @@
+import os
 from os import path
-
-from pyrogram import Client
-from pyrogram.types import Message, Voice
-
-from callsmusic import callsmusic, queues
+import requests
 import aiohttp
-from os import path
-
+import youtube_dl
 from pyrogram import Client
 from pyrogram.types import Message, Voice
-
+from youtube_search import YoutubeSearch
 from callsmusic import callsmusic, queues
 
 import converter
@@ -22,59 +18,90 @@ from helpers.errors import DurationLimitError
 from helpers.gets import get_url, get_file_name
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-@Client.on_message(command("oynat") & other_filters)
+@Client.on_message(command(["dinle", "ytplay"]) & other_filters)
 @errors
-async def oynat(_, message: Message):
+async def dinle(_, message: Message):
 
-    lel = await message.reply("🔄 **ꜱᴇꜱʟᴇʀ ɪꜱʟᴇɴɪʏᴏʀ..**🔥")
+    lel = await message.reply("🔎 **Arıyorum** 😉 Bekleyiniz...")
     sender_id = message.from_user.id
+    user_id = message.from_user.id
     sender_name = message.from_user.first_name
+    user_name = message.from_user.first_name
+    rpk = "["+user_name+"](tg://user?id="+str(user_id)+")"
+
+    query = ''
+    for i in message.command[1:]:
+        query += ' ' + str(i)
+    print(query)
+    await lel.edit("🎵 **Sesler işleniyor..**")
+    ydl_opts = {"format": "bestaudio[ext=m4a]"}
+    try:
+        results = YoutubeSearch(query, max_results=1).to_dict()
+        url = f"https://youtube.com{results[0]['url_suffix']}"
+        #print(results)
+        title = results[0]["title"][:40]       
+        thumbnail = results[0]["thumbnails"][0]
+        thumb_name = f'thumb{title}.jpg'
+        thumb = requests.get(thumbnail, allow_redirects=True)
+        open(thumb_name, 'wb').write(thumb.content)
+
+
+        duration = results[0]["duration"]
+        url_suffix = results[0]["url_suffix"]
+        views = results[0]["views"]
+
+    except Exception as e:
+        lel.edit(
+            "❌ Şarkı bulunamadı.\n\nBaşka bir şarkı deneyin veya belki düzgün heceleyin."
+        )
+        print(str(e))
+        return
 
     keyboard = InlineKeyboardMarkup(
             [
-                 [
+                [
                     InlineKeyboardButton(
-                        text="🇹🇷 ʙᴏᴛᴜɴ ꜱᴀʜɪʙɪ 🇹🇷",
-                        url=f"https://t.me/kakkurt")
+                        text="Keyifli Dinlemeler 🔊",
+                        url=f"{url}")
+                   
+                ]
+            ]
+        )
+
+    keyboard2 = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        text="Keyifli Dinlemeler 🔊",
+                        url=f"{url}")
                    
                 ]
             ]
         )
 
     audio = (message.reply_to_message.audio or message.reply_to_message.voice) if message.reply_to_message else None
-    url = get_url(message)
 
     if audio:
-        if round(audio.duration / 60) > DURATION_LIMIT:
-            raise DurationLimitError(
-                f"❌ Videos longer than {DURATION_LIMIT} minute(s) aren't allowed to play!"
-            )
+        await lel.edit_text("Lel")
 
-        file_name = get_file_name(audio)
-        file_path = await converter.convert(
-            (await message.reply_to_message.download(file_name))
-            if not path.isfile(path.join("downloads", file_name)) else file_name
-        )
     elif url:
         file_path = await converter.convert(youtube.download(url))
     else:
-        return await lel.edit_text("🤷‍♀️ ʙᴀɴᴀ ᴏʏɴᴀᴛɪʟᴀᴄᴀᴋ ᴍᴘ3 ꜰᴏʀᴍᴀᴛɪ ᴠᴇʀᴍᴇᴅɪɴ.!")
+        return await lel.edit_text("🙆‍♂️ Bana oynayacak bir şey vermedin.!")
 
     if message.chat.id in callsmusic.pytgcalls.active_calls:
         position = await queues.put(message.chat.id, file=file_path)
         await message.reply_photo(
-        photo="https://i.ibb.co/Qkz78hx/images-1.jpg",
-        caption="**👤 ᴛᴀʟᴇᴘ ᴇᴅᴇɴ:** {}\n\n**#⃣ ꜱɪʀᴀᴅᴀᴋɪ ᴘᴀʀᴄᴀ ᴇᴋʟᴇɴᴅɪ:** {}".format( 
-        message.from_user.mention(), position
-        ),
-        reply_markup=keyboard)
+        photo=thumb_name, 
+        caption=f"#⃣ İstediğiniz şarkı **sıraya** alındı. 😉 {position}!",
+        reply_markup=keyboard2)
         return await lel.delete()
     else:
         callsmusic.pytgcalls.join_group_call(message.chat.id, file_path)
         await message.reply_photo(
-        photo="https://i.ibb.co/nwHdB2D/images.jpg",
+        photo=thumb_name,
         reply_markup=keyboard,
-        caption="▶️ **ᴏʏɴᴀᴛɪʟɪʏᴏʀ** ʙᴜʀᴀᴅᴀ ɪꜱᴛᴇɴᴇɴ ꜱᴀʀᴋɪ ᴛᴀʀᴀꜰɪɴᴅᴀɴɪᴢᴅᴀɴ {}!".format(
+        caption="▶️ **Oynatılıyor** Burada istenen şarkı {} YouTube Aracılığıyla 🥳".format(
         message.from_user.mention()
         ),
     )
