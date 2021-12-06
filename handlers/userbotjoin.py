@@ -4,7 +4,7 @@ from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.errors import UserAlreadyParticipant
 from helpers.decorators import errors, authorized_users_only
 
-@Client.on_message(filters.command(["asistan", "asistan@NetdMusicBot"]))
+@Client.on_message(filters.group & filters.command(["asistan"]))
 @authorized_users_only
 @errors
 async def addchannel(client, message):
@@ -13,7 +13,7 @@ async def addchannel(client, message):
         invitelink = await client.export_chat_invite_link(chid)
     except:
         await message.reply_text(
-            "<b>Önce Beni Grubunun Yöneticisi Olarak Ekle</b>",
+            "<b>ᴏɴᴄᴇ ʙᴇɴɪ ʏᴏʀ ɢʀᴜʙᴜɴᴜɴ ʏᴏɴᴇᴛɪᴄɪꜱɪ ᴏʟᴀʀᴀᴋ ᴇᴋʟᴇ</b>",
         )
         return
 
@@ -36,7 +36,11 @@ async def addchannel(client, message):
             f"<b>🛑 ᴀꜱɪꜱᴛᴀɴ ʙᴏᴛ ɢʀᴜʙᴀ ᴋᴀᴛɪʟᴀᴍᴀᴅɪ 🛑 \n ᴋᴜʟʟᴀɴɪᴄɪ {user.first_name} ᴋᴜʟʟᴀɴɪᴄɪɴɪɴ ɢʀᴜᴘᴛᴀ ʏᴀꜱᴀᴋʟᴀɴᴍᴀᴅɪɢɪɴᴅᴀɴ ᴇᴍɪɴ ᴏʟᴜɴ."
             "\n\nᴠᴇʏᴀ ɢʀᴜʙᴜɴᴜᴢᴀ ᴇʟ ɪʟᴇ ᴇᴋʟᴇʏɪɴ ᴠᴇ ʏᴇɴɪᴅᴇɴ ᴅᴇɴᴇʏɪɴ</b>",
         )
-
+        return
+    await message.reply_text(
+            "<b>ʏᴀʀᴅɪᴍᴄɪ ᴜꜱᴇʀʙᴏᴛ ꜱᴏʜʙᴇᴛɪɴɪᴢᴇ ᴋᴀᴛɪʟᴅɪ</b>",
+        )
+    
 @USER.on_message(filters.group & filters.command(["asistanby"]))
 async def rem(USER, message):
     try:
