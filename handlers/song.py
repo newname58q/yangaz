@@ -1,5 +1,3 @@
-# Copyright (C) 2021 By VeezMusicProject
-
 from __future__ import unicode_literals
 
 import asyncio
@@ -35,10 +33,10 @@ ydl_opts = {
 }
 
 
-@Client.on_message(command(["song", f"song@{bn}"]) & ~filters.edited)
-def song(_, message):
+@Client.on_message(command(["bul", f"bul@{bn}"]) & ~filters.edited)
+def bul(_, message):
     query = " ".join(message.command[1:])
-    m = message.reply("🔎 finding song...")
+    m = message.reply("🔎 Aranıyor..")
     ydl_ops = {"format": "bestaudio[ext=m4a]"}
     try:
         results = YoutubeSearch(query, max_results=1).to_dict()
@@ -51,21 +49,21 @@ def song(_, message):
         duration = results[0]["duration"]
 
     except Exception as e:
-        m.edit("❌ song not found.\n\nplease give a valid song name.")
+        m.edit("❌ şarkı bulunamadı.\n\nlütfen geçerli bir şarkı adı verin.")
         print(str(e))
         return
-    m.edit("📥 downloading file...")
+    m.edit("⏱️ Sorgulanıyor...")
     try:
         with yt_dlp.YoutubeDL(ydl_ops) as ydl:
             info_dict = ydl.extract_info(link, download=False)
             audio_file = ydl.prepare_filename(info_dict)
             ydl.process_info(info_dict)
-        rep = f"**🎧 Uploader @{bn}**"
+        rep = f"**🎵 İndirildi.**"
         secmul, dur, dur_arr = 1, 0, duration.split(":")
         for i in range(len(dur_arr) - 1, -1, -1):
             dur += int(float(dur_arr[i])) * secmul
             secmul *= 60
-        m.edit("📤 uploading file...")
+        m.edit("📥 Yüklüyorum...")
         message.reply_audio(
             audio_file,
             caption=rep,
@@ -76,7 +74,7 @@ def song(_, message):
         )
         m.delete()
     except Exception as e:
-        m.edit("❌ error, wait for bot owner to fix")
+        m.edit("❌ hatanın, düzelmesini bekleyiniz.")
         print(e)
 
     try:
@@ -216,7 +214,7 @@ def time_to_seconds(times):
 
 
 @Client.on_message(
-    command(["vsong", f"vsong@{bn}", "video", f"video@{bn}"]) & ~filters.edited
+    command(["vbul", f"vbul@{bn}", "video", f"video@{bn}"]) & ~filters.edited
 )
 async def vsong(client, message):
     ydl_opts = {
@@ -228,8 +226,8 @@ async def vsong(client, message):
         "quite": True,
     }
     query = " ".join(message.command[1:])
-    try: 
-        results = YoutubeSearch(query, max_results=5).to_dict()
+    try:
+        results = YoutubeSearch(query, max_results=1).to_dict()
         link = f"https://youtube.com{results[0]['url_suffix']}"
         title = results[0]["title"][:40]
         thumbnail = results[0]["thumbnails"][0]
@@ -243,14 +241,14 @@ async def vsong(client, message):
     except Exception as e:
         print(e)
     try:
-        msg = await message.reply("📥 **downloading video...**")
+        msg = await message.reply("📥 **video indiriyorum...**")
         with YoutubeDL(ydl_opts) as ytdl:
             ytdl_data = ytdl.extract_info(link, download=True)
             file_name = ytdl.prepare_filename(ytdl_data)
     except Exception as e:
         return await msg.edit(f"🚫 **error:** {e}")
     preview = wget.download(thumbnail)
-    await msg.edit("📤 **uploading video...**")
+    await msg.edit("📤 **video yüklüyorum...**")
     await message.reply_video(
         file_name,
         duration=int(ytdl_data["duration"]),
@@ -262,20 +260,3 @@ async def vsong(client, message):
         await msg.delete()
     except Exception as e:
         print(e)
-
-
-@Client.on_message(command(["lyrics", f"lyrics@{bn}"]))
-async def lyrics(_, message):
-    try:
-        if len(message.command) < 2:
-            await message.reply_text("» **give a lyric name too.**")
-            return
-        query = message.text.split(None, 1)[1]
-        rep = await message.reply_text("🔎 **searching lyrics...**")
-        resp = requests.get(
-            f"https://api-tede.herokuapp.com/api/lirik?l={query}"
-        ).json()
-        result = f"{resp['data']}"
-        await rep.edit(result)
-    except Exception:
-        await rep.edit("❌ **lyrics not found.**\n\n» **please give a valid song name.**")

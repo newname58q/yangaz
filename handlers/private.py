@@ -1,95 +1,54 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
+from config import BOT_NAME as BN
+from helpers.filters import command, other_filters2
 
 
-@Client.on_message(
-    filters.command("start")
-    & filters.private
-    & ~ filters.edited
-)
-async def start_(client: Client, message: Message):
-    await message.reply_sticker("CAACAgQAAx0CTv65QgABBfJlYF6VCrGMm6OJ23AxHmD6qUSWESsAAhoQAAKm8XEeD5nrjz5IJFYeBA")
+@Client.on_message(command(["start", f"start"]))
+async def start(_, message: Message):
+    await message.reply_photo("https://i.ibb.co/khRz42f/Turkish-Voice.jpg")
     await message.reply_text(
-        f"""ᴍᴇʀʜᴀʙᴀ 👋! **ᴛᴇʟᴇɢʀᴀᴍ ɢʀᴜᴘʟᴀʀɪɴɪɴ ꜱᴇꜱʟɪ ꜱᴏʜʙᴇᴛʟᴇʀɪɴᴅᴇ ᴍᴜᴢɪᴋ ᴄᴀʟᴀʙɪʟɪʏᴏʀᴜᴍ. ꜱɪᴢɪ ꜱᴀꜱɪʀᴛᴀᴄᴀᴋ ᴘᴇᴋ ᴄᴏᴋ ʜᴀʀɪᴋᴀ ᴏᴢᴇʟʟɪɢɪᴍ ᴠᴀʀ!** 🥳 \n\n🔴 **ᴛᴇʟᴇɢʀᴀᴍᴅᴀ ʙᴇɴɪ ɴᴀꜱɪʟ ᴋᴜʟʟᴀɴᴀʙɪʟᴇᴄᴇɢɪɴɪᴢɪ ᴏɢʀᴇɴᴍᴇᴋ ɪᴄɪɴ ʟᴜᴛꜰᴇɴ >> /help ʙᴜᴛᴏɴᴜɴᴀ ʙᴀꜱɪɴɪᴢ.** \n\n🔴 **ɢʀᴜʙᴜɴᴜᴢᴜɴ ꜱᴇꜱʟɪ ꜱᴏʜʙᴇᴛɪɴᴅᴇ, ᴍᴜᴢɪᴋ ᴄᴀʟᴀʙɪʟᴍᴇᴍ ɪᴄɪɴ ᴀꜱɪꜱᴛᴀɴɪɴ ɢʀᴜʙᴜɴᴜᴢᴅᴀ ᴏʟᴍᴀꜱɪ ɢᴇʀᴇᴋɪʀ.** \n\n🔵 ʙᴜ ᴄᴀʟɪꜱᴍᴀ [Jack Medya](https://t.me/SemtBizimEvKiraa) ᴛᴀʀᴀꜰɪɴᴅᴀɴ ᴋᴇʏꜰᴇ ᴅᴇɢᴇʀ ᴅᴜᴢᴇɴʟᴇɴᴍɪꜱᴛɪʀ.!
-      """,
-        reply_markup=InlineKeyboardMarkup(
-            [ 
-                [
-                    InlineKeyboardButton(
-                        "📣 ʀᴇꜱᴍɪ ᴋᴀɴᴀʟ", url="https://t.me/jackmedya")
-                  ],[
-                    InlineKeyboardButton(
-                        "💬 ꜱᴏʜʙᴇᴛ ɢʀᴜʙᴜ", url="https://t.me/yangazlargrub"
-                    )
-                ],[ 
-                    InlineKeyboardButton(
-                        "🎵 ᴍᴘ3 ᴀʀᴀᴍᴀ ʙᴏᴛᴜ", url="https://t.me/DeezerMusicBot"
-                    )
-              ],[ 
-                    InlineKeyboardButton(
-                        "🎯 ᴜꜱᴇʀᴛᴀɢɢᴇʀ ʙᴏᴛ", url="https://t.me/jacktaggerbot"
-                    )]
-            ]
-        ),
-     disable_web_page_preview=True
-    )
+        f"""**Merhaba, {message.from_user.mention} 🎵
+Sesli sohbetlerde müzik çalabilen botum. Ban yetkisiz, Ses yönetimi yetkisi verip, Asistanı gruba ekleyiniz.\n\nDüzen Tasarım [Talia Müzik 🎙️](https://t.me/Sohbetdestek).
+ **""",
 
-@Client.on_message(
-    filters.command("start")
-    & filters.group
-    & ~ filters.edited
-)
-async def start(client: Client, message: Message):
-    await message.reply_text(
-        "💁🏻‍♂️ʏᴏᴜᴛᴜʙᴇ ᴠɪᴅᴇᴏꜱᴜ ᴀʀᴀᴍᴀᴋ ɪꜱᴛɪʏᴏʀ ᴍᴜꜱᴜɴᴜᴢ? ?",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
-                        "💬 ɢʀᴏᴜᴘ", url="https://t.me/yangazlargrub"
+                        "➕ Grubunuza Ekle ➕", url="https://t.me/Efsanestar_bot?startgroup=true"
                     )
-                ],    
-                [    
+                ],
+                [
                     InlineKeyboardButton(
-                        "✅ Yes", switch_inline_query_current_chat=""
+                        "🔊 Asistan", url="https://t.me/Efsanestar_bot" 
                     ),
                     InlineKeyboardButton(
-                        "No ❌", callback_data="close"
-                    )
-                ]
-            ]
-        )
-    )
-
-@Client.on_message(
-    filters.command("help")
-    & filters.private
-    & ~ filters.edited
-)
-async def help(client: Client, message: Message):
-    await message.reply_text(
-        f"""<b>Merhaba {message.from_user.first_name}! 
-\n/oynat - ᴍᴘ3 ꜰᴏʀᴍᴀᴛɪɴᴀ ᴜʏɢᴜɴ ᴅᴏꜱʏᴀʟᴀʀɪ ᴄᴀʟɪꜱᴛɪʀᴍᴀᴋ ɪᴄɪɴ ᴅᴇᴇꜱᴇʀ ᴍᴜꜱɪᴄ ᴅᴇꜱᴛᴇᴋʟᴇʀ
-/bul - ɪꜱᴛᴇᴅɪɢɪɴɪᴢ ꜱᴀʀᴋɪʟᴀʀɪ ʜɪᴢʟɪ ʙɪʀ ꜱᴇᴋɪʟᴅᴇ ɪɴᴅɪʀɪɴ
-/ytplay - ʏᴏᴜᴛᴜʙᴇ'ᴅᴀɴ ɪꜱᴛᴇᴅɪɢɪɴɪᴢ ᴍᴜᴢɪɢɪ ᴄᴀʟᴀʀ
-/id - ꜱᴏʜʙᴇᴛ ɪᴅ ᴠᴇ ᴋᴜʟʟᴀɴɪᴄɪɴɪɴ ɪᴅ'ꜱɪ ʜᴀᴋᴋɪɴᴅᴀ ʙɪʟɢɪ ᴠᴇʀɪʀ
-\n*🙋‍♂️ ʏᴀʟɴɪᴢᴄᴀ ʏᴏɴᴇᴛɪᴄɪʟᴇʀ ɪᴄɪɴ*
-/durdur - ꜱᴀʀᴋɪ ᴄᴀʟᴍᴀʏɪ ᴅᴜʀᴀᴋʟᴀᴛᴍᴀ
-/devam - ꜱᴀʀᴋɪ ᴄᴀʟᴍᴀʏᴀ ᴅᴇᴠᴀᴍ ᴇᴛ
-/atla - ꜱᴏɴʀᴀᴋɪ ꜱᴀʀᴋɪʏɪ ᴄᴀʟ
-/son- ᴍᴜᴢɪᴋ ᴄᴀʟᴍᴀʏɪ ᴅᴜʀᴅᴜʀᴍᴀ
-/asistan - ᴀꜱɪꜱᴛᴀɴɪ ꜱᴏʜʙᴇᴛɪɴɪᴢᴇ ᴅᴀᴠᴇᴛ ᴇᴛᴍᴇ
-/asistanby - ᴀꜱɪꜱᴛᴀɴɪɴɪᴢɪ ꜱᴏʜʙᴇᴛɪɴɪᴢᴅᴇɴ ᴄɪᴋᴀʀɪʀ
-/admincache - ʏᴏɴᴇᴛɪᴍ ᴏɴ ʙᴇʟʟᴇᴋ ʏᴇɴɪʟᴇʀ
- </b>""",
-        reply_markup=InlineKeyboardMarkup(
-            [
+                        "💬 Sohbet", url="https://t.me/Sohbetskyfall"
+                    ),
+                    InlineKeyboardButton(
+                        "🙎‍♂️ Geliştirici", url="https://t.me/Mahoaga") 
+                ],
                 [
                     InlineKeyboardButton(
-                        "🎵 ᴍᴜᴢɪᴋ ᴋᴀɴᴀʟɪ", url="https://t.me/yangazlargrub"
+                        "🧩 Kaynak Kodu", url="https://t.me/Sohbetdestek" 
                     )
                 ]
             ]
-        )
-    )    
+        ), 
+     disable_web_page_preview=True
+   ) 
+
+@Client.on_message(command(["bilgi"])) 
+async def bilgi(_, message: Message):
+      await message.reply_text(f"**Merhaba {message.from_user.mention}!\n Bu botun bilgi menüsü 📚\n\n ▶️ /play - şarkı çalmak için youtube url'sine veya şarkı dosyasına yanıt verme\n ▶️ /play <song name> - istediğiniz şarkıyı çalınız\n 🔴 /ytplay <Sorgu> - youtube üzerinden çalar\n 🎵 /bul <song name> - istediğiniz şarkıları hızlı bir şekilde bulun\n 🎵 /vbul istediğiniz videoları hızlı bir şekilde bulun\n 🔍 /ara <query> - youtube'da ayrıntıları içeren videoları arama\n\n Yalnızca yöneticiler için..\n ⏩ /resume - şarkı çalmaya devam et\n ⏹ /end - müzik botunu kapatmak için\n 🔼 /ver botun sadece yönetici için kullanılabilir olan komutlarını kullanabilmesi için kullanıcıya yetki ver\n 🔽 /al botun yönetici komutlarını kullanabilen kullanıcının yetkisini al\n 🎚 /ses asistan hesabın ses seviyesini kontrol et\n\n ⚪ /katil - Müzik asistanı grubunuza katılır\n ⚫ /ayril - Müzik asistanı grubunuzu terk eder.**", 
+      reply_markup=InlineKeyboardMarkup(
+             [
+                 [
+                     InlineKeyboardButton(
+                         "👨‍🔧 Geliştirici", url="https://t.me/Sohbetdestek")
+                 ]
+             ]
+         )
+    )
