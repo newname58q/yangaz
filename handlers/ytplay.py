@@ -18,11 +18,11 @@ from helpers.errors import DurationLimitError
 from helpers.gets import get_url, get_file_name
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-@Client.on_message(command("ytplay") & other_filters)
+@Client.on_message(command(["dinle", "ytplay"]) & other_filters)
 @errors
-async def ytplay(_, message: Message):
+async def dinle(_, message: Message):
 
-    lel = await message.reply("🔎 **ᴀʀɪʏᴏʀᴜᴍ** 😉 ʙᴇᴋʟᴇʏɪɴɪᴢ...")
+    lel = await message.reply("🔎 **Arıyorum** 😉 Bekleyiniz...")
     sender_id = message.from_user.id
     user_id = message.from_user.id
     sender_name = message.from_user.first_name
@@ -33,7 +33,7 @@ async def ytplay(_, message: Message):
     for i in message.command[1:]:
         query += ' ' + str(i)
     print(query)
-    await lel.edit("🎵 **ꜱᴇꜱʟᴇʀ ɪꜱʟᴇɴɪʏᴏʀ..** ʙɪʀᴀᴢ ᴢᴀᴍᴀɴ ᴀʟᴀʙɪʟɪʀ..")
+    await lel.edit("🎵 **Sesler işleniyor..**")
     ydl_opts = {"format": "bestaudio[ext=m4a]"}
     try:
         results = YoutubeSearch(query, max_results=1).to_dict()
@@ -52,43 +52,28 @@ async def ytplay(_, message: Message):
 
     except Exception as e:
         lel.edit(
-            "❌ ꜱᴀʀᴋɪ ʙᴜʟᴜɴᴀᴍᴀᴅɪ.\n\nʙᴀꜱᴋᴀ ʙɪʀ ꜱᴀʀᴋɪ ᴅᴇɴᴇʏɪɴ ᴠᴇʏᴀ ᴅᴜᴢɢᴜɴ ʏᴀᴢɪɴ."
+            "❌ Şarkı bulunamadı.\n\nBaşka bir şarkı deneyin veya belki düzgün heceleyin."
         )
         print(str(e))
         return
-        
-    keyboard4 = InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(
-                        text="Watch On YouTube",
-                        url=f"{url}")
-                   
-                ]
-            ]
-        )
-        
-    keyboard3 = InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(
-                        text="Watch On YouTube",
-                        url=f"{url}")
-                   
-                ]
-            ]
-        )
 
     keyboard = InlineKeyboardMarkup(
             [
                 [
+                    InlineKeyboardButton(
+                        text="Keyifli Dinlemeler 🔊",
+                        url=f"{url}")
+                   
+                ]
+            ]
+        )
 
     keyboard2 = InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
-                        text="🇹🇷 ʙᴏᴛᴜɴ ꜱᴀʜɪʙɪ 🇹🇷",
-                        url=f"https://t.me/kakkurt")
+                        text="Keyifli Dinlemeler 🔊",
+                        url=f"{url}")
                    
                 ]
             ]
@@ -102,13 +87,13 @@ async def ytplay(_, message: Message):
     elif url:
         file_path = await converter.convert(youtube.download(url))
     else:
-        return await lel.edit_text("🙆‍♂️ ʙᴀɴᴀ ᴏʏɴᴀʏᴀᴛᴀᴄᴀᴋ ʙɪʀ ꜱᴇʏ ᴠᴇʀᴍᴇᴅɪɴ.!")
+        return await lel.edit_text("🙆‍♂️ Bana oynayacak bir şey vermedin.!")
 
     if message.chat.id in callsmusic.pytgcalls.active_calls:
         position = await queues.put(message.chat.id, file=file_path)
         await message.reply_photo(
         photo=thumb_name, 
-        caption=f"#⃣ ɪꜱᴛᴇᴅɪɢɪɴɪᴢ ꜱᴀʀᴋɪ **ꜱɪʀᴀʏᴀ** ᴀʟɪɴᴅɪ. 😉 {position}!",
+        caption=f"#⃣ İstediğiniz şarkı **sıraya** alındı. 😉 {position}!",
         reply_markup=keyboard2)
         return await lel.delete()
     else:
@@ -116,8 +101,9 @@ async def ytplay(_, message: Message):
         await message.reply_photo(
         photo=thumb_name,
         reply_markup=keyboard,
-        caption="▶️ **ᴏʏɴᴀᴛɪʟɪʏᴏʀ** ʙᴜʀᴀᴅᴀ ɪꜱᴛᴇɴᴇɴ ꜱᴀʀᴋɪ {} ʏᴏᴜᴛᴜʙᴇ ᴀʀᴀᴄɪʟɪɢɪʏʟᴀ 🥳".format(
+        caption="▶️ **Oynatılıyor** Burada istenen şarkı {} YouTube Aracılığıyla 🥳".format(
         message.from_user.mention()
         ),
     )
         return await lel.delete()
+
