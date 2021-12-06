@@ -1,49 +1,39 @@
-from pyrogram import Client, filters
-from config import BOT_NAME 
-from helpers.get_file_id import get_file_id
+"""
+Get id of the replied user
+Syntax: /id
+"""
+
+from pyrogram import Client
+from pyrogram.types import Message
+
+from config import BOT_USERNAME
 from helpers.filters import command
+from helpers.get_file_id import get_file_id
 
 
-@Client.on_message(command(["id"]))
-async def showid(client, message):
+@Client.on_message(command(["id", f"id@{BOT_USERNAME}"]))
+async def showid(_, message: Message):
     chat_type = message.chat.type
 
     if chat_type == "private":
         user_id = message.chat.id
-        await message.reply_text(
-            f"<code>{user_id}</code>",
-            quote=True
-        )
+        await message.reply_text(f"<code>{user_id}</code>")
 
     elif chat_type in ["group", "supergroup"]:
         _id = ""
-        _id += (
-            "<b>ɢʀᴜʙᴜɴ ꜱᴏʜʙᴇᴛ ᴋɪᴍʟɪɢɪ</b>: "
-            f"<code>{message.chat.id}</code>\n"
-        )
+        _id += "<b>Chat ID</b>: " f"<code>{message.chat.id}</code>\n"
         if message.reply_to_message:
             _id += (
-                "<b>ᴋᴜʟʟᴀɴɪᴄɪɴɪɴ ᴋɪᴍʟɪᴋ ʙɪʟɢɪꜱɪ</b>: "
+                "<b>Replied User ID</b>: "
                 f"<code>{message.reply_to_message.from_user.id}</code>\n"
             )
             file_info = get_file_id(message.reply_to_message)
-            if file_info:
-                _id += (
-                    f"<b>{file_info.message_type}</b>: "
-                    f"<code>{file_info.file_id}</code>\n"
-                )
         else:
-            _id += (
-                "<b>ᴋᴜʟʟᴀɴɪᴄɪ ᴋɪᴍʟɪɢɪ</b>: "
-                f"<code>{message.from_user.id}</code>\n"
-            )
+            _id += "<b>User ID</b>: " f"<code>{message.from_user.id}</code>\n"
             file_info = get_file_id(message)
-            if file_info:
-                _id += (
-                    f"<b>{file_info.message_type}</b>: "
-                    f"<code>{file_info.file_id}</code>\n"
-                )
-        await message.reply_text(
-            _id,
-            quote=True
-        )
+        if file_info:
+            _id += (
+                f"<b>{file_info.message_type}</b>: "
+                f"<code>{file_info.file_id}</code>\n"
+            )
+        await message.reply_text(_id)
